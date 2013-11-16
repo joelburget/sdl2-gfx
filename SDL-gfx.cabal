@@ -1,0 +1,28 @@
+Cabal-Version:      >= 1.6
+Name:               SDL2-gfx
+Version:            0.1.0
+Maintainer:         Joel Burget (joelburget@gmail.com)
+Author:             Joel Burget (joelburget@gmail.com), Lemmih (lemmih@gmail.com)
+Copyright:          2004-2005, 2010 - Lemmih; 2013 Joel Burget
+License-File:       LICENSE
+License:            BSD3
+Build-Type:         Custom
+Category:           Foreign binding
+Synopsis:           Bindings to libSDL2_gfx
+Extra-Source-Files: SDL-gfx.buildinfo.in, config.mk.in, configure, includes/HsSDLConfig.h.in
+Data-Files:         README, MACOSX
+
+Library
+  Build-Depends:    base >= 3 && < 5, SDL2
+  Extensions:       CPP, ForeignFunctionInterface, EmptyDataDecls
+  Exposed-Modules:
+    Graphics.UI.SDL.Rotozoomer,
+    Graphics.UI.SDL.Primitives,
+    Graphics.UI.SDL.Framerate
+  -- Includes:         SDL.h SDL_framerate.h SDL_gfxPrimitives.h SDL_rotozoom.h
+  include-dirs: includes
+
+
+source-repository head
+    type:     git
+    location: https://github.com/joelburget/sdl2-gfx.git
