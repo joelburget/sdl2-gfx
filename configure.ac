@@ -1,4 +1,4 @@
-AC_INIT([SDL2-gfx], [0.1.0], [joelburget@gmail.com], [SDL-gfx])
+AC_INIT([SDL2-gfx], [0.1.0], [joelburget@gmail.com])
 
 # Safety check: Ensure that we are in the correct source directory.
 AC_CONFIG_SRCDIR([includes/HsSDLConfig.h.in])
@@ -6,7 +6,7 @@ AC_CONFIG_SRCDIR([includes/HsSDLConfig.h.in])
 # Header file to place defines in
 AC_CONFIG_HEADERS([includes/HsSDLConfig.h])
 
-AC_PATH_PROGS([SDL_CONFIG], [sdl-config sdl11-config], [none])
+AC_PATH_PROGS([SDL_CONFIG], [sdl2-config sdl20-config], [none])
 
 if test "x$SDL_CONFIG" = "xnone"; then
 
