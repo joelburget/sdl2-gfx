@@ -45,157 +45,158 @@ import Graphics.UI.SDL.Color
 import Graphics.UI.SDL.Rect
 import Graphics.UI.SDL.Utilities (intToBool, toBitmask, fromCInt, toCInt)
 
-foreign import ccall unsafe "pixelColor" gfxPixelColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "pixelColor"
+    gfxPixelColor :: Ptr RendererStruct -> Int16 -> Int16 -> Word32 -> IO CInt
 
-pixel :: Surface -> Int16 -> Int16 -> Pixel -> IO Bool
-pixel surface x y (Pixel w) = withForeignPtr surface $ \ptr ->
+pixel :: Renderer -> Int16 -> Int16 -> Pixel -> IO Bool
+pixel renderer x y (Pixel w) = withForeignPtr renderer $ \ptr ->
                               intToBool (-1) (fmap fromCInt $ gfxPixelColor ptr x y w)
 
-foreign import ccall unsafe "hlineColor" gfxHLineColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "hlineColor" gfxHLineColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-hLine :: Surface -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
-hLine surface x1 x2 y (Pixel w) = withForeignPtr surface $ \ptr ->
+hLine :: Renderer -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
+hLine renderer x1 x2 y (Pixel w) = withForeignPtr renderer $ \ptr ->
                                   intToBool (-1) (fmap fromCInt $ gfxHLineColor ptr x1 x2 y w)
 
-foreign import ccall unsafe "vlineColor" gfxVLineColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "vlineColor" gfxVLineColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-vLine :: Surface -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
-vLine surface x y1 y2 (Pixel w) = withForeignPtr surface $ \ptr ->
+vLine :: Renderer -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
+vLine renderer x y1 y2 (Pixel w) = withForeignPtr renderer $ \ptr ->
                                   intToBool (-1) (fmap fromCInt $ gfxVLineColor ptr x y1 y2 w)
 
-foreign import ccall unsafe "rectangleColor" gfxRectangleColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "rectangleColor" gfxRectangleColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-rectangle :: Surface -> Rect -> Pixel -> IO Bool
-rectangle surface (Rect x y w h) (Pixel c) = withForeignPtr surface $ \ptr ->
+rectangle :: Renderer -> Rect -> Pixel -> IO Bool
+rectangle renderer (Rect x y w h) (Pixel c) = withForeignPtr renderer $ \ptr ->
                                              intToBool (-1) (fmap fromCInt $ gfxRectangleColor ptr (fromIntegral x) (fromIntegral y) (fromIntegral w) (fromIntegral h) c)
 
-foreign import ccall unsafe "boxColor" gfxBoxColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "boxColor" gfxBoxColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-box :: Surface -> Rect -> Pixel -> IO Bool
-box surface (Rect x y w h) (Pixel c) = withForeignPtr surface $ \ptr ->
+box :: Renderer -> Rect -> Pixel -> IO Bool
+box renderer (Rect x y w h) (Pixel c) = withForeignPtr renderer $ \ptr ->
                                        intToBool (-1) (fmap fromCInt $ gfxBoxColor ptr (fromIntegral x) (fromIntegral y) (fromIntegral w) (fromIntegral h) c)
 
-foreign import ccall unsafe "lineColor" gfxLineColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "lineColor" gfxLineColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-line :: Surface -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
-line surface x y x' y' (Pixel w) = withForeignPtr surface $ \ptr ->
+line :: Renderer -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
+line renderer x y x' y' (Pixel w) = withForeignPtr renderer $ \ptr ->
                                    intToBool (-1) (fmap fromCInt $ gfxLineColor ptr x y x' y' w)
 
-foreign import ccall unsafe "aalineColor" gfxAALineColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "aalineColor" gfxAALineColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-aaLine :: Surface -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
-aaLine surface x y x' y' (Pixel w) = withForeignPtr surface $ \ptr ->
+aaLine :: Renderer -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
+aaLine renderer x y x' y' (Pixel w) = withForeignPtr renderer $ \ptr ->
                                      intToBool (-1) (fmap fromCInt $ gfxAALineColor ptr x y x' y' w)
 
-foreign import ccall unsafe "circleColor" gfxCircleColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "circleColor" gfxCircleColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-circle :: Surface -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
-circle surface x y r (Pixel w) = withForeignPtr surface $ \ptr ->
+circle :: Renderer -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
+circle renderer x y r (Pixel w) = withForeignPtr renderer $ \ptr ->
                                  intToBool (-1) (fmap fromCInt $ gfxCircleColor ptr x y r w)
 
-foreign import ccall unsafe "arcColor" gfxArcColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "arcColor" gfxArcColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-arc :: Surface -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
-arc surface x y r s e (Pixel w) = withForeignPtr surface $ \ptr ->
+arc :: Renderer -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
+arc renderer x y r s e (Pixel w) = withForeignPtr renderer $ \ptr ->
                                   intToBool (-1) (fmap fromCInt $ gfxArcColor ptr x y r s e w)
 
-foreign import ccall unsafe "aacircleColor" gfxAACircleColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "aacircleColor" gfxAACircleColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-aaCircle :: Surface -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
-aaCircle surface x y r (Pixel w) = withForeignPtr surface $ \ptr ->
+aaCircle :: Renderer -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
+aaCircle renderer x y r (Pixel w) = withForeignPtr renderer $ \ptr ->
                                    intToBool (-1) (fmap fromCInt $ gfxAACircleColor ptr x y r w)
 
-foreign import ccall unsafe "filledCircleColor" gfxFilledCircleColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "filledCircleColor" gfxFilledCircleColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-filledCircle :: Surface -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
-filledCircle surface x y r (Pixel w) = withForeignPtr surface $ \ptr ->
+filledCircle :: Renderer -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
+filledCircle renderer x y r (Pixel w) = withForeignPtr renderer $ \ptr ->
                                        intToBool (-1) (fmap fromCInt $ gfxFilledCircleColor ptr x y r w)
 
-foreign import ccall unsafe "ellipseColor" gfxEllipseColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "ellipseColor" gfxEllipseColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-ellipse :: Surface -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
-ellipse surface x y rx ry (Pixel w) = withForeignPtr surface $ \ptr ->
+ellipse :: Renderer -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
+ellipse renderer x y rx ry (Pixel w) = withForeignPtr renderer $ \ptr ->
                                       intToBool (-1) (fmap fromCInt $ gfxEllipseColor ptr x y rx ry w)
 
-foreign import ccall unsafe "aaellipseColor" gfxAAEllipseColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "aaellipseColor" gfxAAEllipseColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-aaEllipse :: Surface -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
-aaEllipse surface x y rx ry (Pixel w) = withForeignPtr surface $ \ptr ->
+aaEllipse :: Renderer -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
+aaEllipse renderer x y rx ry (Pixel w) = withForeignPtr renderer $ \ptr ->
                                         intToBool (-1) (fmap fromCInt $ gfxAAEllipseColor ptr x y rx ry w)
 
-foreign import ccall unsafe "filledEllipseColor" gfxFilledEllipseColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "filledEllipseColor" gfxFilledEllipseColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-filledEllipse :: Surface -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
-filledEllipse surface x y rx ry (Pixel w) = withForeignPtr surface $ \ptr ->
+filledEllipse :: Renderer -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
+filledEllipse renderer x y rx ry (Pixel w) = withForeignPtr renderer $ \ptr ->
                                             intToBool (-1) (fmap fromCInt $ gfxFilledEllipseColor ptr x y rx ry w)
 
-foreign import ccall unsafe "pieColor" gfxPieColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "pieColor" gfxPieColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-pie :: Surface -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
-pie surface x y r s e (Pixel w) = withForeignPtr surface $ \ptr ->
+pie :: Renderer -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
+pie renderer x y r s e (Pixel w) = withForeignPtr renderer $ \ptr ->
                                   intToBool (-1) (fmap fromCInt $ gfxPieColor ptr x y r s e w)
 
-foreign import ccall unsafe "filledPieColor" gfxFilledPieColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "filledPieColor" gfxFilledPieColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-filledPie :: Surface -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
-filledPie surface x y r s e (Pixel w) = withForeignPtr surface $ \ptr ->
+filledPie :: Renderer -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
+filledPie renderer x y r s e (Pixel w) = withForeignPtr renderer $ \ptr ->
                                         intToBool (-1) (fmap fromCInt $ gfxFilledPieColor ptr x y r s e w)
 
-foreign import ccall unsafe "trigonColor" gfxTrigonColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "trigonColor" gfxTrigonColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-trigon :: Surface -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
-trigon surface x1 y1 x2 y2 x3 y3 (Pixel w) = withForeignPtr surface $ \ptr ->
+trigon :: Renderer -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
+trigon renderer x1 y1 x2 y2 x3 y3 (Pixel w) = withForeignPtr renderer $ \ptr ->
                                              intToBool(-1) (fmap fromCInt $ gfxTrigonColor ptr x1 y1 x2 y2 x3 y3 w)
 
-foreign import ccall unsafe "aatrigonColor" gfxAATrigonColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "aatrigonColor" gfxAATrigonColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-aaTrigon :: Surface -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
-aaTrigon surface x1 y1 x2 y2 x3 y3 (Pixel w) = withForeignPtr surface $ \ptr ->
+aaTrigon :: Renderer -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
+aaTrigon renderer x1 y1 x2 y2 x3 y3 (Pixel w) = withForeignPtr renderer $ \ptr ->
                                                intToBool(-1) (fmap fromCInt $ gfxAATrigonColor ptr x1 y1 x2 y2 x3 y3 w)
 
-foreign import ccall unsafe "filledTrigonColor" gfxFilledTrigonColor :: Ptr SurfaceStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
+foreign import ccall unsafe "filledTrigonColor" gfxFilledTrigonColor :: Ptr RendererStruct -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Word32 -> IO CInt
 
-filledTrigon :: Surface -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
-filledTrigon surface x1 y1 x2 y2 x3 y3 (Pixel w) = withForeignPtr surface $ \ptr ->
+filledTrigon :: Renderer -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Int16 -> Pixel -> IO Bool
+filledTrigon renderer x1 y1 x2 y2 x3 y3 (Pixel w) = withForeignPtr renderer $ \ptr ->
                                                    intToBool(-1) (fmap fromCInt $ gfxFilledTrigonColor ptr x1 y1 x2 y2 x3 y3 w)
 
-foreign import ccall unsafe "polygonColor" gfxPolygonColor :: Ptr SurfaceStruct -> Ptr Int16 -> Ptr Int16 -> Int -> Word32 -> IO CInt
+foreign import ccall unsafe "polygonColor" gfxPolygonColor :: Ptr RendererStruct -> Ptr Int16 -> Ptr Int16 -> Int -> Word32 -> IO CInt
 
-polygon :: Surface -> [(Int16, Int16)] -> Pixel ->  IO Bool
-polygon surface list (Pixel w) = withForeignPtr surface $ \ptr ->
+polygon :: Renderer -> [(Int16, Int16)] -> Pixel ->  IO Bool
+polygon renderer list (Pixel w) = withForeignPtr renderer $ \ptr ->
                                  withArray (map fst list) $ \xs ->
                                  withArray (map snd list) $ \ys ->
                                  intToBool (-1) $ fmap fromCInt $ gfxPolygonColor ptr xs ys (length list) w
 
-foreign import ccall unsafe "aapolygonColor" gfxAAPolygonColor :: Ptr SurfaceStruct -> Ptr Int16 -> Ptr Int16 -> Int -> Word32 -> IO CInt
+foreign import ccall unsafe "aapolygonColor" gfxAAPolygonColor :: Ptr RendererStruct -> Ptr Int16 -> Ptr Int16 -> Int -> Word32 -> IO CInt
 
-aaPolygon :: Surface -> [(Int16, Int16)] -> Pixel ->  IO Bool
-aaPolygon surface list (Pixel w) = withForeignPtr surface $ \ptr ->
+aaPolygon :: Renderer -> [(Int16, Int16)] -> Pixel ->  IO Bool
+aaPolygon renderer list (Pixel w) = withForeignPtr renderer $ \ptr ->
                                    withArray (map fst list) $ \xs ->
                                    withArray (map snd list) $ \ys ->
                                    intToBool (-1) $ fmap fromCInt $ gfxAAPolygonColor ptr xs ys (length list) w
 
-foreign import ccall unsafe "filledPolygonColor" gfxFilledPolygonColor :: Ptr SurfaceStruct -> Ptr Int16 -> Ptr Int16 -> Int -> Word32 -> IO CInt
+foreign import ccall unsafe "filledPolygonColor" gfxFilledPolygonColor :: Ptr RendererStruct -> Ptr Int16 -> Ptr Int16 -> Int -> Word32 -> IO CInt
 
-filledPolygon :: Surface -> [(Int16, Int16)] -> Pixel ->  IO Bool
-filledPolygon surface list (Pixel w) = withForeignPtr surface $ \ptr ->
+filledPolygon :: Renderer -> [(Int16, Int16)] -> Pixel ->  IO Bool
+filledPolygon renderer list (Pixel w) = withForeignPtr renderer $ \ptr ->
                                        withArray (map fst list) $ \xs ->
                                        withArray (map snd list) $ \ys ->
                                        intToBool (-1) $ fmap fromCInt $ gfxFilledPolygonColor ptr xs ys (length list) w
 
-foreign import ccall unsafe "texturedPolygon" gfxTexturedPolygon :: Ptr SurfaceStruct -> Ptr Int16 -> Ptr Int16 -> Int -> Ptr SurfaceStruct -> Int -> Int -> IO CInt
+foreign import ccall unsafe "texturedPolygon" gfxTexturedPolygon :: Ptr RendererStruct -> Ptr Int16 -> Ptr Int16 -> Int -> Ptr RendererStruct -> Int -> Int -> IO CInt
 
-texturedPolygon :: Surface -> [(Int16, Int16)] -> Surface -> Int -> Int ->  IO Bool
-texturedPolygon surface list texture dx dy = withForeignPtr surface $ \ptr ->
+texturedPolygon :: Renderer -> [(Int16, Int16)] -> Renderer -> Int -> Int ->  IO Bool
+texturedPolygon renderer list texture dx dy = withForeignPtr renderer $ \ptr ->
                                              withForeignPtr texture $ \txt ->
                                              withArray (map fst list) $ \xs ->
                                              withArray (map snd list) $ \ys ->
                                              intToBool (-1) $ fmap fromCInt $ gfxTexturedPolygon ptr xs ys (length list) txt dx dy
 
-foreign import ccall unsafe "bezierColor" gfxBezierColor :: Ptr SurfaceStruct -> Ptr Int16 -> Ptr Int16 -> Int -> Int -> Word32 -> IO CInt
+foreign import ccall unsafe "bezierColor" gfxBezierColor :: Ptr RendererStruct -> Ptr Int16 -> Ptr Int16 -> Int -> Int -> Word32 -> IO CInt
 
-bezier :: Surface -> [(Int16, Int16)] -> Int -> Pixel ->  IO Bool
-bezier surface list steps (Pixel w) = withForeignPtr surface $ \ptr ->
+bezier :: Renderer -> [(Int16, Int16)] -> Int -> Pixel ->  IO Bool
+bezier renderer list steps (Pixel w) = withForeignPtr renderer $ \ptr ->
                                       withArray (map fst list) $ \xs ->
                                       withArray (map snd list) $ \ys ->
                                       intToBool (-1) $ fmap fromCInt $ gfxBezierColor ptr xs ys (length list) steps w
