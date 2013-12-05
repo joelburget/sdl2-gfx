@@ -20,6 +20,7 @@ Library
     Graphics.UI.SDL.Primitives,
     Graphics.UI.SDL.Framerate
   -- Includes:         SDL.h SDL_framerate.h SDL_gfxPrimitives.h SDL_rotozoom.h
+  Extra-Libraries:  SDL2_gfx
   include-dirs: includes
 
 
